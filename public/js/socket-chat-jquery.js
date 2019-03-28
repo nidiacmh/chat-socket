@@ -34,7 +34,7 @@ function renderizarMensaje(mensaje, yo){
 
   var adminClass = 'info';
   if (mensaje.nombre === 'Administrador') {
-    adminClass = 'danger';
+    adminClass = 'warning';
   }
 
   if (yo) {
@@ -68,6 +68,24 @@ function renderizarMensaje(mensaje, yo){
 
 }
 
+//scrollbar
+function scrollBottom() {
+
+    // selectors
+    var newMessage = divChatbox.children('li:last-child');
+
+    // heights
+    var clientHeight = divChatbox.prop('clientHeight');
+    var scrollTop = divChatbox.prop('scrollTop');
+    var scrollHeight = divChatbox.prop('scrollHeight');
+    var newMessageHeight = newMessage.innerHeight();
+    var lastMessageHeight = newMessage.prev().innerHeight() || 0;
+
+    if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+        divChatbox.scrollTop(scrollHeight);
+    }
+}
+
 //Listeners
 
 divUsuarios.on('click','a', function(){
@@ -91,7 +109,10 @@ formEnviar.on('submit', function(e){
   }, function(mensaje) {
       txtMensaje.val('').focus();
       renderizarMensaje(mensaje, true);
+      scrollBottom();
       // console.log('respuesta server: ', resp);
   });
 
 });
+
+// Se puede seguir mejorando el chat, e ir implementando cosas nuevas 
